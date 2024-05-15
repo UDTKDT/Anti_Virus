@@ -3,10 +3,17 @@
 #include <cstring>
 #include <sys/ptrace.h>
 #include <chrono>
+<<<<<<< HEAD
 #include <vector>
 #include <dirent.h>
 #include <fstream>
 #include <unistd.h>
+=======
+#include <thread>
+#include <cstdlib>
+#include <unistd.h>
+#include <cstring>
+>>>>>>> 2bf9cde838a041c93af123dbc95fb9d8ab86ca47
 
 using namespace std;
 
@@ -14,13 +21,22 @@ using namespace std;
 struct option options[]={
     {"help", no_argument, 0, 'h'},
     {"info", no_argument, 0, 'i'},
+<<<<<<< HEAD
     {"background",required_argument, 0, 'b'},
+=======
+    {"detect",required_argument, 0, 'd'},
+>>>>>>> 2bf9cde838a041c93af123dbc95fb9d8ab86ca47
     {"scan", no_argument, 0,'s'}, //인자값 필요로 한다면 no_argument -> required_argument
     {0,0,0,0}
 };
 
 void scan(){
     cout << "이 프로그램은 .. " << endl;
+}
+
+void error(){
+    cout << "Error: Invalid option" << endl;
+    cout << "For usage information, type 'UdkdAgent --help'" << endl;
 }
 
 void help(){
@@ -48,6 +64,7 @@ void info(){
     cout << "This tool is essential for maintaining optimal security in vulnerable or targeted environments, providing users with peace of mind through defensive capabilities." << endl;
 }
 
+<<<<<<< HEAD
 void error(){
     cout << "error" << endl;
 }
@@ -83,13 +100,27 @@ int logic2(){
     if (ptrace(PTRACE_TRACEME, 0, 1, 0) == -1)
     {
         cout << "don't trace me !!"  << endl;
-        return 1;
-    }
+=======
 
-    cout << "normal execution" << endl;
+int logic1(){
+    cout << "logic1" << endl;
+
     return 0;
 }
 
+int self(void){
+    if(ptrace(PTRACE_TRACEME, 0, 0, 0) < 0) {
+        cout << "No debugging please" << endl;
+        cout << "This will exit gdb now." << endl;
+        sleep(2);
+        exit(1);
+>>>>>>> 2bf9cde838a041c93af123dbc95fb9d8ab86ca47
+        return 1;
+    }
+    return 0;
+}
+
+<<<<<<< HEAD
 void background(char* argv){
 
     if(strcmp(argv, "logic")==0){
@@ -108,3 +139,12 @@ void background(char* argv){
 
 
 }
+=======
+void detect(char* argv){
+    if(strcmp(argv, "logic1")==0){
+        logic1();
+    } else if(strcmp(argv, "self") == 0){
+        self();
+    }
+}
+>>>>>>> 2bf9cde838a041c93af123dbc95fb9d8ab86ca47
