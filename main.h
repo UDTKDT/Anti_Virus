@@ -4,6 +4,7 @@
 #include <sys/ptrace.h>
 #include <chrono>
 <<<<<<< HEAD
+<<<<<<< HEAD
 #include <vector>
 #include <dirent.h>
 #include <fstream>
@@ -14,56 +15,53 @@
 #include <unistd.h>
 #include <cstring>
 >>>>>>> 2bf9cde838a041c93af123dbc95fb9d8ab86ca47
+=======
+#include <cstdlib>
+#include <unistd.h>
+#include <cstring>
+#include <errno.h>
+#include <filesystem>
+#include <string>
+#include <fstream>
+#include <dirent.h>
+#include "process.h"
+#include <dirent.h>
+#include <fstream>
+#include <vector>
+#include <signal.h>
+#include <algorithm>
+#include "antidbg.h"
+#include "scan.h"
+>>>>>>> 582089411009f0f4a9bf94b2c6318716af4aae23
 
 using namespace std;
 
-//pr test test2
 struct option options[]={
     {"help", no_argument, 0, 'h'},
     {"info", no_argument, 0, 'i'},
+<<<<<<< HEAD
 <<<<<<< HEAD
     {"background",required_argument, 0, 'b'},
 =======
     {"detect",required_argument, 0, 'd'},
 >>>>>>> 2bf9cde838a041c93af123dbc95fb9d8ab86ca47
+=======
+    {"detect", required_argument, 0, 'd'},
+>>>>>>> 582089411009f0f4a9bf94b2c6318716af4aae23
     {"scan", no_argument, 0,'s'}, //인자값 필요로 한다면 no_argument -> required_argument
+    {"ps", no_argument, 0, 'p'},
     {0,0,0,0}
 };
 
 void scan(){
-    cout << "이 프로그램은 .. " << endl;
+    cout << " " << endl;
 }
 
-void error(){
-    cout << "Error: Invalid option" << endl;
-    cout << "For usage information, type 'UdkdAgent --help'" << endl;
-}
+void error();
 
-void help(){
-    cout << "Usage: ./UdkdAgent [OPTIONS]" << endl;
-    cout << " " << endl;
-    cout << "Options: " << endl;
-    cout << "  -i, --info               Print detailed information about the Agent." << endl;
-    cout << "  -d, --detect             Activate the anti-debugging protection. Use this feature to safeguard sensitive code from being analyzed or tampered with by external debugging." << endl;
-    cout << "  -s, --scan [path]        Scan files in the specified directory. Default is '/' if no path is provided." << endl; 
-}
+void help();
 
-void info(){
-    cout << "Program Information" << endl;
-    cout << "=====================================================================" << endl;
-    cout << "Name: UdkdAgent" << endl;
-    cout << "Version: " << endl;
-    cout << "Release Date: " << endl;
-    cout << " " << endl;
-    cout << "Description: UdkdAgent is designed to enhance system protection through anti-debugging and malware detection techniques." << endl;
-    cout << " " << endl;
-    cout << "Key Features include: " << endl;
-    cout << "    - Malware Scanning: Eliminates potential threats before they can cause harm." << endl;
-    cout << "    - Anti-Debugging: Protects sensitive code from being analyzed or manipulated by unauthorized debuggers." << endl;
-    cout << " " << endl;
-    cout << "This tool is essential for maintaining optimal security in vulnerable or targeted environments, providing users with peace of mind through defensive capabilities." << endl;
-}
-
+<<<<<<< HEAD
 <<<<<<< HEAD
 void error(){
     cout << "error" << endl;
@@ -101,14 +99,17 @@ int logic2(){
     {
         cout << "don't trace me !!"  << endl;
 =======
+=======
+void info();
+>>>>>>> 582089411009f0f4a9bf94b2c6318716af4aae23
 
 int logic1(){
     cout << "logic1" << endl;
-
     return 0;
 }
 
 int self(void){
+<<<<<<< HEAD
     if(ptrace(PTRACE_TRACEME, 0, 0, 0) < 0) {
         cout << "No debugging please" << endl;
         cout << "This will exit gdb now." << endl;
@@ -117,6 +118,8 @@ int self(void){
 >>>>>>> 2bf9cde838a041c93af123dbc95fb9d8ab86ca47
         return 1;
     }
+=======
+>>>>>>> 582089411009f0f4a9bf94b2c6318716af4aae23
     return 0;
 }
 
@@ -141,10 +144,13 @@ void background(char* argv){
 }
 =======
 void detect(char* argv){
-    if(strcmp(argv, "logic1")==0){
+    if(strcmp(argv, "logic1") == 0){
         logic1();
     } else if(strcmp(argv, "self") == 0){
         self();
     }
 }
+<<<<<<< HEAD
 >>>>>>> 2bf9cde838a041c93af123dbc95fb9d8ab86ca47
+=======
+>>>>>>> 582089411009f0f4a9bf94b2c6318716af4aae23
