@@ -8,6 +8,7 @@
 #include <openssl/sha.h>
 #include <iomanip>
 #include "scan.h"
+#include <yara.h>
 
 using namespace std;
 
@@ -63,7 +64,7 @@ void scanDirectory(const string& path, int option) {
                 file_count++;
                 total_size += node->fts_statp->st_size;
                 cout << node->fts_path << "\n";
-                checkYaraRule();
+                checkYaraRule(node->fts_path, detectedMalware);
             }
         }    
     }
@@ -143,6 +144,58 @@ string computeSHA256(const string& filename) {
 }
 
 
-void checkYaraRule() {
+void checkYaraRule(const string& filePath, vector<string>& detectedMalware) {
+    YR_COMPILER* compiler = nullptr;
+    YR_RULES* rules = nullptr;
 
+    // yara 라이브러리 초기화
+    if (yr_initialize() != ERROR_SUCCESS) {
+        cout << "Failed to initialize YARA." << endl;
+        return;
+    }
+    // yara 컴파일러 객체 생성
+    if (yr_compiler_create(&compiler) != ERROR_SUCCESS) {
+        cout << "Failed to create YARA compiler." << endl;
+        yr_finalize();
+        return;
+    }
+    // yara rule 파일 열기
+    const char* ruleFile = "rules.yara";
+    FILE* ruleFilePtr = fopen(ruleFile, "r");
+    if (!ruleFilePtr) {
+        cout << "Failed to open YARA rules file." << endl;
+        yr_compiler_destroy(compiler);
+        yr_finalize();
+        return;
+    }
+    // yara rule 컴파일
+    if (yr_compiler_add_file(compiler, ruleFilePtr, nullptr, ruleFile) != 0) {
+        cout << "Failed to compile YARA rules." << endl;
+        fclose(ruleFilePtr);
+        yr_compiler_destroy(compiler);
+        yr_finalize();
+        return;
+    }
+    fclose(ruleFilePtr);
+
+    // Get the compiled rules
+    if (yr_compiler_get_rules(compiler, &rules) != ERROR_SUCCESS) {
+        cerr << "Failed to get compiled YARA rules." << endl;
+        yr_compiler_destroy(compiler);
+        yr_finalize();
+        return;
+    }
+        // Scan the file with the compiled rules
+    int scanResult = yr_rules_scan_file(rules, filePath.c_str(), 0, nullptr, nullptr, 0);
+    if (scanResult == ERROR_SUCCESS) {
+        detectedMalware.push_back(filePath);
+        cout << "\n\033[31m[+] Malware detected: [" << filePath << "]\033[0m\n\n";
+    } else if (scanResult == ERROR_COULD_NOT_OPEN_FILE) {
+        cerr << "Could not open file " << filePath << "." << endl;
+    }
+        // Cleanup
+    yr_rules_destroy(rules);
+    yr_compiler_destroy(compiler);
+    yr_finalize();
 }
+

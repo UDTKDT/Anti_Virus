@@ -26,7 +26,7 @@ void CheckOpt(int argc, char** argv){
                 break;
 
             case 'p':
-                process();
+                showprocess();
                 break;
 
             case '?':
@@ -37,6 +37,30 @@ void CheckOpt(int argc, char** argv){
                 abort();
         }
     }
+}
+
+void help() {
+    cout << "Help message" << endl;
+    // 추가적인 도움말 메시지를 작성합니다.
+}
+
+void info() {
+    cout << "Information message" << endl;
+    // 추가적인 정보 메시지를 작성합니다.
+}
+
+void detect() {
+    cout << "Detect functionality" << endl;
+    // 추가적인 탐지 기능을 작성합니다.
+}
+
+void error() {
+    cout << "Error message" << endl;
+    // 추가적인 오류 메시지를 작성합니다.
+}
+void showprocess() {
+    cout << "Process functionality" << endl;
+    // 프로세스 관련 기능을 작성합니다.
 }
 
 int main(int argc, char **argv){

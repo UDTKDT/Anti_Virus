@@ -1,3 +1,5 @@
+#ifndef MAIN_H
+#define MAIN_H
 #include <getopt.h>
 #include <iostream>
 #include "process.h"
@@ -17,4 +19,10 @@ struct option options[]={
 };
 
 void CheckOpt(int argc, char** argv);
+void help();    // 함수 선언
+void info();    // 함수 선언
+void detect();  // 함수 선언
+void showprocess(); // 함수 선언
+void error(); 
 
+#endif
