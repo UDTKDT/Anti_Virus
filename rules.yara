@@ -1,4 +1,4 @@
-rule silent_banker :banker
+rule AdKdtest
 {
     meta:
         description = "This is just an example"
@@ -6,7 +6,7 @@ rule silent_banker :banker
         in_the_wild = true
     strings:
         $a = "test"  nocase
-        $b = {8D 4D B0 2B C1 83 C0 27 99 6A 4E 59 F7 F9}
+        $b = { F4 23 01 02 03 04 62 B4 }
         $c = "UVODFRYSIHLNWPEJXQZAKCBGMT"
     condition:
         $a or $b or $c
