@@ -18,8 +18,8 @@ std::string GetStatInfo(const std::string& path) {
     return stat;
 }
 
-std::vector<std::string> ParseStat(const std::string& stat) {
-    std::istringstream iss(stat);
+std::vector<std::string> ParsingString(const std::string str) {
+    std::istringstream iss(str);
     std::string token;
     std::vector<std::string> tokens;
 
@@ -35,7 +35,6 @@ int CheckProcess() {
     std::vector<std::string> dbg_pids;
     std::vector<std::string> udkd_pids;
     std::vector<std::string> udkd_ppids;
-    std::vector<std::string> stat_parse;
 
     //dir open
     if ((dir = opendir("/proc")) == nullptr){
@@ -54,7 +53,7 @@ int CheckProcess() {
                 return ERROR_CANNOT_OPEN_FILE;
             }
 
-            std::vector<std::string> stat_parse = ParseStat(stat);
+            std::vector<std::string> stat_parse = ParsingString(stat);
 
             if (stat_parse[1] == "(gdb)") {
                 dbg_pids.push_back(stat_parse[0]);

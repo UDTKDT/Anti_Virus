@@ -17,7 +17,7 @@
 std::string GetStatInfo(const std::string& path);
 
 // GetStatInfo 함수를 통해 읽어온 데이터를 파싱하고 vector에 저장하는 함수 (/proc/[pid]/stat 파일의 데이터를 문자열로 받아옴)
-std::vector<std::string> ParseStat(const std::string& stat);
+std::vector<std::string> ParsingString(const std::string str);
 
 // 실행중인 프로세스를 확인하여 디버거를 탐지하는 함수
 int CheckProcess();

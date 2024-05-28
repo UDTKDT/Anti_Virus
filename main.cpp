@@ -1,44 +1,48 @@
 #include "main.h"
 
-CUdkdAgentOptions IAgentOptions;
-CUsageCollector IUsageOption;
-CLoggingManager ILoggingOption;
+// CUdkdAgentOptions IAgentOptions;
+// CUsageCollector IUsageOption;
+// CLoggingManager ILoggingOption;
 
 // 인자값 필요로 한다면 :붙이기 ex) hib:s:
 void CheckOption(int &argc, char** &argv){
     int nOptionIndex= 0;
     int nOpt;
-    const char* pOption="dhilsu";
+    const char* pOption="dhilsuf";
 
     while((nOpt = getopt_long(argc, argv, pOption, options, &nOptionIndex)) != -1 ){
         switch(nOpt){
-            case 'd':
-                Detect();
-                break;
+            // case 'd':
+            //     Detect();
+            //     break;
 
-            case 'h':
-                IAgentOptions.DisplayHelpOption(); 
-                break;
+            // case 'h':
+            //     IAgentOptions.DisplayHelpOption(); 
+            //     break;
             
-            case 'i':
-                IAgentOptions.DisplayInfoOption();
-                break;
+            // case 'i':
+            //     IAgentOptions.DisplayInfoOption();
+            //     break;
             
-            case 'l':
-                ILoggingOption.TestLogging();
+            // case 'l':
+            //     ILoggingOption.TestLogging();
+            //     break;
+
+            // case 's':
+            //     StartScan();
+            //     break;
+
+            // case 'u':
+            //     IUsageOption.CollectAndSaveUsage();
+            //     break;
+
+            case 'f':
+                Firewall();
                 break;
 
-            case 's':
-                StartScan();
-                break;
-
-            case 'u':
-                IUsageOption.CollectAndSaveUsage();
-                break;
-
-            case '?':
-                IAgentOptions.DisplayErrorOption();
-                break;
+            // case '?':
+            //     IAgentOptions.DisplayErrorOption();
+            //     break;
             
             default:
                 abort();
