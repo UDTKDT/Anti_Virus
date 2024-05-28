@@ -5,26 +5,28 @@
 #include <iostream>
 #include <unordered_map>
 #include <functional>
+#include <regex>
 
 #include "error_codes.h"
 #include "VariadicTable.h"
 
 
-//////////////////////////
+/////////2번 옵션/////////////
 int ConfigureFirewall();
+void PrintFirewallOption();
 int AddRule(std::vector<std::string>& words);
 int UpdateRule(std::vector<std::string>& words);
 int DeleteRule(std::vector<std::string>& words);
 int RuleList(std::vector<std::string>& words);
+bool isValidIP(const std::string& ip);
+bool isValidPort(const std::string& port);
 //////////////////////////
 
 
-void PrintFirewallOption();
+
 
 int ViewLogs();
 
 int StartFirewall();
-
-
 
 int Firewall();
