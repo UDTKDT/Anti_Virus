@@ -46,15 +46,16 @@ int StartFirewall(){
 }
 
 int ConfigureFirewall(){
-    //이걸 help로 뺄지, 수정해서 간단하게 한 다음 기본으로 출력할지
+    //이걸 help()로 뺄지, 기본으로 출력할지
     std::cout << 
-        "If you want to ADD a new rule \n"
+        "\033[1;34m[ADD] \033[0m \n"
         "[A/add] [TO/FROM] [IP] [PORT] [o/x] \n\n"
-        "If you want to UPDATE an existing rule \n"
-        "[U/update] [Rule Number] [OPTION] > [Change value] \n\n"
-        "If you want to DELETE a rule \n"
+        "\033[1;32m[UPDATE] \033[0m\n"
+        "[U/update] [Rule Number] [OPTION] [>] [Change Value] \n\n"
+        "\033[1;31m[DELETE] \033[0m\n"
         "[D/delete] [Rule Number] \n\n"
-        "[L/list] : View Firewall Rules \n\n" ;
+        "\033[1;33m[LIST] \033[0m\n"
+        "[L/list] \n\n" ;
     
     std::unordered_map<std::string, std::function<int(std::vector<std::string>&)>> command_map = {
         {"A", AddRule},
@@ -89,8 +90,10 @@ int ConfigureFirewall(){
         std::vector<std::string> words;
         std::string word;
 
-        // words에 추가하기 전에 소문자로 바꾸는 로직 추가하기
-        // 로직 추가 후 비교할 때 소문자로만 비교하기
+        //input 받은거 처리 함수 만들기
+        // 1. 대소문자 구분 x
+        // 2. x/o -> PERMIT/DENY
+        // 3. to/from -> OUT/IN
 
         while(iss >> word){
             words.push_back(word);
@@ -139,51 +142,37 @@ int AddRule(std::vector<std::string>& words){
         exit(1);
     }
     
-
-
-    // //txt 파일에 룰 추가
-    // std::string filename="firewall_rules.txt";
-    // std::ofstream outfile;
-    // outfile.open(filename, std::ios_base::app);
-
-    // if (!outfile.is_open()) {
-    //     //에러
-    //     std::cout << "error4" << std::endl;
-    //     exit(1);
-    // }
-
-    // for (size_t i=1; i < words.size(); ++i){
-    //     std::string& j = words[i];
-    //     j = (j == "TO") ? "OUT" : (j == "FROM") ? "IN" : (j == "o") ? "PERMIT" : (j == "x") ? "DENY" :j;
-    //     outfile << j << " ";
-    // }
-    // outfile << "\n";
-
-    // outfile.close();
-
     file.read(ini);
     
-    auto it = ini.begin();
-    std::string lastSection;
+    auto it = std::prev(ini.end());
+    std::string lastSection = it->first;
+    std::string ruleNum = std::to_string(stoi(lastSection)+1);
+    std::vector<std::string> keys = {"","Direction", "IP", "PORT", "Action"};
 
-    // Iterate through the sections
-    for (; it != ini.end(); ++it) {
-        lastSection = it->first;
+    ini[ruleNum];
+    for (size_t i = 1; i < keys.size(); ++i) {
+        std::string& j = words[i];
+        j = (j == "TO") ? "OUT" : (j == "FROM") ? "IN" : (j == "o") ? "PERMIT" : (j == "x") ? "DENY" :j;
+        ini[ruleNum][keys[i]] = j;
     }
-    std::cout << "Last section name: " << lastSection << std::endl;
-
-    
-
+    file.write(ini);
 
     std::cout << "Rule successfully added \n" << std::endl;
     return 0;
     
 }
 
-
-
 int UpdateRule(std::vector<std::string>& words){
+    
+    
+    file.read(ini);
+    
+  
+    ini[words[1]][words[2]]=words[4];
+    
 
+    file.write(ini);
+    std::cout << "Rule successfully Updated" << std::endl;
 }
 
 
@@ -195,22 +184,35 @@ int DeleteRule(std::vector<std::string>& words){
 
 
 int RuleList(std::vector<std::string>& words){
-    VariadicTable<std::string, std::string, std::string, std::string, std::string> vt({"No", "IN/OUT", "IP Address", "PORT", "Action"}, 10);
+    VariadicTable<std::string, std::string, std::string, std::string, std::string> vt({"No", "Direction", "IP Address", "PORT", "Action"}, 10);
+    
+    file.read(ini);
+    //ini가 null일 경우 에러처리 코드 추가
 
-    vt.addRow("1", "192.168.10.20","22","IN","PERMIT");
-    vt.addRow("2","19","22","IN","PERMIT");
+    for (auto const& it : ini){ 
+        std::vector<std::string> tmp;
+        auto const& section = it.first;
+        auto const& collection = it.second;
+        
+         for (auto const& it2 : collection){
+            tmp.push_back(it2.second);
+	    }
+        vt.addRow(it.first,tmp[0],tmp[1],tmp[2],tmp[3]);
+    }
 
     vt.print(std::cout);
 
+    return 0;
 }
 
 
 int ViewLogs(){
-    
+    return 0;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
+//private
 
 bool isValidIP(const std::string& ip) {
     std::regex ipPattern("^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\."
@@ -224,3 +226,5 @@ bool isValidPort(const std::string& port) {
     std::regex portPattern("^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{0,3}|0)$");
     return std::regex_match(port, portPattern);
 }
+
+
