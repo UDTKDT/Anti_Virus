@@ -6,6 +6,10 @@
 #include <unordered_map>
 #include <functional>
 #include <regex>
+#include <unordered_set>
+#include <cstdlib>
+#include <unistd.h>
+#include <csignal>
 
 #include "error_codes.h"
 #include "VariadicTable.h"
@@ -17,15 +21,20 @@ int AddRule(std::vector<std::string>& words);
 int UpdateRule(std::vector<std::string>& words);
 int DeleteRule(std::vector<std::string>& words);
 int RuleList(std::vector<std::string>& words);
+//private//
+void PrintConfigMenual();
 bool isValidIP(const std::string& ip);
 bool isValidPort(const std::string& port);
+void ConfigureInput(std::vector<std::string>& words);
+void handle_exit(int signum);
 //////////////////////////
 
+int StartFirewall();
 
 
 
 int ViewLogs();
 
-int StartFirewall();
+
 
 int Firewall();

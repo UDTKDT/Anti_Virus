@@ -1,9 +1,12 @@
 {
     "files.associations": {
-        "*.tcc": "cpp",
+        "ostream": "cpp",
+        "unordered_set": "cpp",
+        "regex": "cpp",
         "array": "cpp",
         "atomic": "cpp",
         "bit": "cpp",
+        "*.tcc": "cpp",
         "bitset": "cpp",
         "cctype": "cpp",
         "chrono": "cpp",
@@ -35,7 +38,6 @@
         "optional": "cpp",
         "random": "cpp",
         "ratio": "cpp",
-        "regex": "cpp",
         "string": "cpp",
         "string_view": "cpp",
         "system_error": "cpp",
@@ -50,13 +52,13 @@
         "istream": "cpp",
         "limits": "cpp",
         "new": "cpp",
-        "ostream": "cpp",
         "shared_mutex": "cpp",
         "sstream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "thread": "cpp",
         "cinttypes": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "csignal": "cpp"
     }
 }
